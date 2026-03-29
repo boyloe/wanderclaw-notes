@@ -71,7 +71,7 @@ Better AI → more outcomes per $ of compute
          → better AI
 ```
 
-This flywheel doesn't exist in traditional SaaS. It's unique to AI-native outcome businesses.
+This flywheel doesn't exist in traditional SaaS. It's unique to AI-native outcome businesses. → explored in depth in [[margin-flywheel]]
 
 ## Applied to QA Monitor
 
