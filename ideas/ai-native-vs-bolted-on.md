@@ -63,4 +63,4 @@ To push it fully native: have the AI *write* the test steps from a plain English
 
 - Where does "agentic" end and "AI-native" begin? Are they the same?
 - Can a B2C app be truly AI-native or does it only work for knowledge work / dev tools?
-- What's the monetization model difference? (AI-native can charge on outcomes, not seats)
+- What's the monetization model difference? (AI-native can charge on outcomes, not seats) → explored in [[outcome-based-pricing]]
