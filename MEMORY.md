@@ -1,6 +1,6 @@
 # MEMORY.md — Wanderclaw's Long-Term Memory
 
-_Last updated: 2026-03-27_
+_Last updated: 2026-04-03_
 
 ---
 
@@ -39,9 +39,11 @@ AI-powered QA testing SaaS. Wanderclaw runs browser tests autonomously, alerts o
 
 ### Stack
 - **Frontend:** Next.js 16 (App Router), TypeScript, Tailwind v4
-- **DB:** SQLite via Prisma 7 + better-sqlite3 adapter
+- **DB:** PostgreSQL (Supabase) via Prisma 7 + `@prisma/adapter-pg`
 - **Auth:** NextAuth v5 (magic link email)
 - **Payments:** Stripe (subscriptions)
+- **Email:** Resend (`re_h4P2EZsq_Mh12JD9JqZW2FLt3263Uf9y5`)
+- **Logging:** Winston (JSON prod / colorized dev)
 - **Browser automation:** Playwright (Chromium headless)
 - **Process manager:** PM2
 
@@ -71,12 +73,12 @@ AI-powered QA testing SaaS. Wanderclaw runs browser tests autonomously, alerts o
 - Value: `dev-session-bryan-1774669923195`
 - Expires: 2026-04-27
 
-### Status (2026-03-28)
-✅ DB schema + migrations
+### Status (2026-04-03)
+✅ DB schema (PostgreSQL/Supabase)
 ✅ NextAuth magic link auth
 ✅ Landing page + pricing
 ✅ Dashboard overview, clients, client detail + flows
-✅ Seed data (3 clients, 7 flows, 51 results, 2 incidents)
+✅ Seed data (3 clients, 7 flows, 945 results, incidents)
 ✅ Playwright test runner (headless Chromium)
 ✅ Step executor (plain English → browser actions)
 ✅ Cron scheduler (per-plan intervals)
@@ -84,6 +86,11 @@ AI-powered QA testing SaaS. Wanderclaw runs browser tests autonomously, alerts o
 ✅ Stripe payments (checkout, webhooks, billing portal)
 ✅ Settings page (plan cards + alert config)
 ✅ PM2 process manager (both processes running)
+✅ Prisma 7 + @prisma/adapter-pg (PostgreSQL)
+✅ Winston structured logging (all subsystems)
+✅ /api/health endpoint (DB ping + uptime)
+✅ Resend email integration (transactional alerts)
+✅ DB-backed alert queue (exponential backoff, 5 max attempts)
 
 ### Critical Gaps (System Design Audit, 2026-04-02)
 
@@ -113,34 +120,22 @@ AI-powered QA testing SaaS. Wanderclaw runs browser tests autonomously, alerts o
 
 ### 90-Day Execution Plan — Progress (Apr 3, 2026)
 
-**Week 1-2: Database + Logging**
+**Week 1-2: Database + Logging** ✅ COMPLETE
 
-✅ **COMPLETED (Apr 3):**
 - [x] PostgreSQL setup (Supabase)
 - [x] Data migration: 945 test results + metadata
-- [x] Schema pushed to PostgreSQL
-- [x] Prisma schema updated
-- [x] .env configured
-- [x] SSH deploy keys working
-
-⚠️ **CURRENT BLOCKER:**
-- Prisma 7 build issue: "requires adapter or accelerateUrl"
-- Solution: Add `export const dynamic = 'force-dynamic'` to API routes
-- ETA to fix: ~15 min with Sonnet
-
-📋 **NEXT (Fresh Session):**
-- [ ] Fix Prisma build issue
-- [ ] Verify `npm run build` succeeds
-- [ ] Test runner with PostgreSQL
-- [ ] Deploy runner to VPS
-- [ ] Add structured logging (Winston)
-- [ ] Add health check endpoint
-- [ ] Setup email SMTP
+- [x] Prisma 7 build fix — switched from SQLite adapter to `@prisma/adapter-pg`
+- [x] `npm run build` passes clean
+- [x] Test runner wired to PostgreSQL
+- [x] Winston structured logging (dashboard + runner, all subsystems)
+- [x] `/api/health` endpoint (DB ping, uptime, 200/503)
+- [x] Resend email integration (replaces nodemailer)
+- [x] DB-backed alert queue with exponential backoff retry
 
 **Week 3-4: Observability + Reliability**
 - [ ] Metrics collection (Prometheus-compatible)
-- [ ] Alert delivery queue + retry logic
-- [ ] Playwright browser pool
+- [x] Alert delivery queue + retry logic ← done in Week 1-2
+- [ ] Playwright browser pool (currently spawns fresh Chromium per test)
 - [ ] Circuit breaker for flaky hosts
 
 **Week 5-6: Infrastructure + Portfolio**
@@ -270,17 +265,31 @@ File: `/home/boyloe/.openclaw/workspace/rv-park-deals.md`
 - Migrated 945 test results from SQLite to Supabase PostgreSQL
 - Data verified: all row counts match
 
-**Key Learnings:**
-- Job market wants: React + TypeScript + Python + LLM APIs + vector databases
-- Your gap: Specific LLM shipping examples (Failsafe will fix this)
-- Failsafe = portfolio project that proves AI capability
-- Prisma 7 requires different config for PostgreSQL (lesson for next build)
+### Apr 3, 2026 (21:13-21:38 UTC) — Week 1-2 Sprint Complete
+**Accomplishments:**
+- Fixed Prisma 7 build error: installed `@prisma/adapter-pg`, wired `PrismaPg` into `PrismaClient` constructor, removed `url` from `schema.prisma` (no longer valid in Prisma 7)
+- Added Winston structured logging: `src/lib/logger.ts` with child loggers per subsystem (db, auth, stripe, runner)
+- Added `/api/health` endpoint: DB ping with latency, uptime, 200 ok / 503 degraded
+- Wired Resend for transactional email alerts — removed nodemailer entirely
+- Migrated test runner (`runner/scheduler.ts`) from SQLite to PostgreSQL
+- Added DB-backed alert queue with exponential backoff: `runner/alert-queue.ts`
+  - Backoff: 1m → 5m → 15m → 60m → 240m, max 5 attempts
+  - Permanently marks FAILED after exhaustion
+  - Queue processor runs every minute via cron
+- Updated README with all current stack info, new env vars, health check docs
+- All changes committed and pushed to `git@github.com:boyloe/failsafe.git`
 
-**Blocker:** Prisma 7 build issue with Stripe API route. Fix in next session.
+**Key Learnings:**
+- Prisma 7 completely removed `url` from schema datasource — adapter pattern is mandatory
+- `prisma migrate dev` conflicts with old SQLite migration lock — use `db push` during dev
+- Resend free tier: 3k/mo, 100/day — fine for beta
 
 ## Lessons Learned
 
 - 3D low-poly box geometry is hard to make readable — lean into stylized (glowing edges, holographic) rather than realistic
 - Always run `pnpm build` before pushing to catch TypeScript/render errors
 - Don't rely on Tailwind utility classes for critical layout — use explicit CSS for max-width/centering
-- Prisma 7 requires special handling for PostgreSQL (no adapter needed, but API routes need dynamic export)
+- Prisma 7: `url` removed from schema, must use driver adapter (`@prisma/adapter-pg` for PostgreSQL)
+- Prisma 7 + existing DB: use `db push` not `migrate dev` to avoid migration lock conflicts
+- Alert delivery should always be queued, never fire-and-forget — silent failures are invisible failures
+- Resend > nodemailer for transactional email: simpler API, better deliverability, no SMTP config
