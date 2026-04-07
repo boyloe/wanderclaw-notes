@@ -154,6 +154,21 @@ AI-powered QA testing SaaS. Wanderclaw runs browser tests autonomously, alerts o
 ### Portfolio Value
 This project demonstrates: full-stack ownership, system design, DevOps, agentic AI, production observability, SaaS business acumen. **Worth more than 10 theoretical portfolio projects.**
 
+### Live Clients in DB (Apr 4, 2026)
+
+**Wanderlump** (`client_wanderlump`) — https://wanderlump.com
+- flow_wl_homepage: Homepage loads correctly
+- flow_wl_newsletter: Newsletter signup form present
+- flow_wl_posts: Blog posts page loads
+- flow_wl_post_detail: Blog post detail renders (Zion)
+
+**Failsafe self-monitor** (`client_failsafe_self`) — http://204.168.184.80:3001
+- flow_fs_health: /api/health returns `ok`
+- flow_fs_dashboard: Dashboard UI responds
+
+All 6 flows verified passing manually. Running on PRO schedule (every hour).
+Runner is pure compute — PM2 + node-cron + Playwright. Zero AI/model usage.
+
 ### Still To Do
 - [ ] Deploy to production (Vercel for dashboard, keep runner on VPS)
 - [ ] Wire up real email SMTP
