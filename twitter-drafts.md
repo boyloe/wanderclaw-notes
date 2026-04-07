@@ -9,36 +9,34 @@ _Status: Ready for review_
 
 ### Post 1 — Monday, Apr 7 (Building)
 ```
-just shipped exponential backoff to our alert queue. 
+shipped exponential backoff to our alert queue today. finally.
 
-reduced false positives by 40%. took way longer than i thought to get right because the retry logic kept racing with the notification service.
+spent way too long debugging a race condition between the retry logic and the notification service. the fix was small, but finding it was painful. 
 
-the boring stuff is always the stuff that matters most.
+this is the stuff nobody talks about but it's what actually keeps things running.
 ```
 
 ### Post 2 — Wednesday, Apr 9 (RV Reality)
 ```
-installed 400W of solar this past weekend.
+installed 400W of solar this weekend. it actually works.
 
-our rv office now runs on sunlight. it's weird how much better you feel knowing your power is literally above your head instead of in a tank slowly draining.
+there's something satisfying about knowing your office is powered by the sun. beats staring at a battery percentage creeping down all day.
 
-also: the cats don't care. they still knocked over water everywhere.
+the cats knocked over water on the new panels. nature's way of saying congratulations.
 ```
 
 ### Post 3 — Friday, Apr 11 (AI Learning)
 ```
-been building with AI agents for about 2 months now.
+two months in with agents and i'm learning they're way better at orchestration than nuance.
 
-the biggest lesson: agents are great at orchestration, terrible at nuance. they will confidently do the wrong thing if you let them.
-
-constraints > freedom when it comes to what an agent can do.
+they'll confidently do the wrong thing if you don't constrain them properly. which means the interesting problem isn't "how do i make it smarter" but "how do i make it safer."
 ```
 
 ### Post 4 — Sunday, Apr 13 (Crossover)
 ```
-wrote code for 6 hours from a campground in colorado. the wifi held up. the view was better than my usual office.
+worked from a campground in colorado today. wifi actually held. sky was better than my monitor.
 
-remote work is wild when your office moves every few weeks.
+you don't realize how much of remote work is just "your office has the same view every day" until it doesn't.
 ```
 
 ---
@@ -47,40 +45,32 @@ remote work is wild when your office moves every few weeks.
 
 ### Post 5 — Monday, Apr 14 (Building)
 ```
-prisma 7 forced me to rethink our entire migration strategy.
+migrating to prisma 7 was annoying. the adapter pattern makes sense once you're in it, but the docs don't really cover the non-vercel path.
 
-the adapter pattern is actually solid once you understand it. but the docs are sparse if you're not using vercel postgres.
-
-if you're migrating to 7: don't use `migrate dev` with existing dbs. use `db push`. saved me a whole day of debugging.
+if you're doing this: skip `migrate dev` with existing dbs, just use `db push`. would've saved me like 8 hours.
 ```
 
 ### Post 6 — Wednesday, Apr 16 (RV Reality)
 ```
-full-time rv internet reality check:
+internet while full-time RVing:
 
-starlink: fast, reliable, but expensive ($150/mo). good when you're remote.
-verizon hotspot: slower but unlimited. better for backup.
-campground wifi: laughable. don't count on it.
+starlink works, $150/mo, actually fast. verizon hotspot is our backup, slower but unlimited. campground wifi is a joke.
 
-we run starlink + verizon. redundancy beats hoping.
+we do both. redundancy > hope.
 ```
 
 ### Post 7 — Thursday, Apr 17 (AI Learning)
 ```
-built a browser automation agent today. it worked perfectly in my test. 
+built a browser automation agent. worked great in testing. immediately fell apart in production because the site changed its html.
 
-in production it broke immediately because the site changed its html structure.
-
-agents need to be resilient or they're expensive rubber bands. learning this the hard way.
+agents break in new ways. they're confident about it too, which is the fun part.
 ```
 
 ### Post 8 — Saturday, Apr 19 (Crossover)
 ```
-my office this week: a travel trailer parked near moab, utah.
+this week my office is near moab. shipped code, fixed solar stuff, watched the sunset.
 
-shipped a feature, fixed solar charging, and watched the sunset. 
-
-this is the dream people talk about. it's also chaotic. both things are true.
+it's the dream. it's also chaotic. weirdly both things are true at the same time.
 ```
 
 ---
