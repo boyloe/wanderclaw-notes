@@ -16,13 +16,25 @@ spent way too long debugging a race condition between the retry logic and the no
 this is the stuff nobody talks about but it's what actually keeps things running.
 ```
 
-### Post 2 — Wednesday, Apr 9 (RV Reality)
+### Post 2 — Wednesday, Apr 9 (AI Learning)
 ```
-installed 400W of solar this weekend. it actually works.
+Learned something the hard way today with @openclaw
 
-there's something satisfying about knowing your office is powered by the sun. beats staring at a battery percentage creeping down all day.
+My AI agent runs heartbeat checks every 30 min to stay on top of tasks. Didn't realize it was using the full model + entire conversation history each time.
 
-the cats knocked over water on the new panels. nature's way of saying congratulations.
+Woke up to $9 in charges before I touched my keyboard.
+
+Here's what I didn't know:
+• You can set a separate model just for heartbeats
+• lightContext: true loads only your checklist file instead of everything
+• isolatedSession: true drops the chat history entirely
+
+53k tokens per heartbeat → ~2k
+~$0.50 per check → ~$0.001
+
+The agent still works exactly the same. Just doesn't cost a small fortune to check in.
+
+Always check your defaults. The cheap path usually exists — you just have to find it.
 ```
 
 ### Post 3 — Friday, Apr 11 (AI Learning)
